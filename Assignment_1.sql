@@ -1,7 +1,7 @@
 
 
 
---Question 1 Hired
+--Question 1. Hired
 --Write a query to display employee ID, first name, last name, 
 --and hire date for employees who have been hired after the last 
 --employee hired in April 2016 but two months before the first employee
@@ -20,45 +20,69 @@ AND hire_date < (SELECT add_months(MIN(hire_date), -2)
                  AND hire_date > TO_CHAR(TO_DATE('31-JUL-2016', 'DD-MON-YYYY')))
 ORDER BY hire_date, employee_id;
 
---Question 2 Direct Reports
+--Question 2. Direct Reports
 --Display manager ID for managers with more than one direct employee. 
 --Answer this question without using the COUNT()function.
 --Sort the result by manager ID.
---The query returns 15 rows. See the output columns:
+--The query returns 15 rows. See the output columns
+--Manager ID
+------------
 
-SELECT distinct manager_id
+SELECT DISTINCT manager_id AS "Manager ID"
 FROM employees p
-where employee_id <> any (select employee_id
-                          from employees
-                          where manager_id = p.manager_id);
-select * from employees;
--- Question 4.	Frequent Ordered Products
+WHERE employee_id <> ANY (SELECT employee_id
+                          FROM employees
+                          WHERE manager_id = p.manager_id)
+ORDER BY "Manager ID";
+
+--Question 3.	Rest
+--Use your query in Q2 and SET Operator(s) to display manager ID for managers who have 
+--only one direct employee. You are still not allowed to use COUNT().
+--Sort the result by manager ID. 
+--The query returns 3 rows. See the output columns:
+--Manager ID
+------------
+SELECT manager_id AS "Manager ID"
+FROM employees p
+WHERE employee_id = ANY (SELECT employee_id
+                          FROM employees
+                          WHERE manager_id = p.manager_id) 
+MINUS
+
+SELECT manager_id 
+FROM employees p
+WHERE employee_id <> ANY (SELECT employee_id
+                          FROM employees
+                          WHERE manager_id = p.manager_id)
+ORDER BY "Manager ID";
+
+-- Question 4. Frequent Ordered Products
 -- Write a SQL query to display products that have been ordered multiple 
 -- times (in different orders) on the same day in 2015.
--- Display product ID, order date, and the number of times the product has been ordered on that day.
+-- Display product ID, order date, and the number of times the product has 
+-- been ordered on that day.
 -- Sort the result by order date and product ID.
 -- The query returns 2 rows. See the following output columns:
 -- Product ID   Order Date     Number of orders
 -- ----------   ----------     ----------------
 
-SELECT product_id, order_date, count(product_id)
-from order_items oi
-left join orders o
-on oi.order_id = o.order_id
-where order_date > to_char(to_date('01-01-2015', 'DD-MM-YYYY')) 
-                   AND order_date < to_char(to_date('01-01-2016', 'DD-MM-YYYY')) 
-group by product_id, order_date
-having count(product_id) > 1 
-order by product_id;
+SELECT product_id, order_date, COUNT( DISTINCT oi.order_id) AS "number of orders"
+FROM order_items oi
+LEFT JOIN orders o
+ON oi.order_id = o.order_id
+WHERE order_date > TO_CHAR(TO_DATE('01-01-2015', 'DD-MM-YYYY')) 
+                   AND order_date < TO_CHAR(TO_DATE('01-01-2016', 'DD-MM-YYYY')) 
+GROUP BY product_id, order_date
+HAVING COUNT( DISTINCT oi.order_id) > 1  
+ORDER BY product_id;
 
-/*5.	Purchased
-Write a query to display customer ID and customer name for customers who have 
-purchased all these three products: Products with ID 31, 205, 275.
-Sort the result by customer ID.
-The query returns 1 row. See the following output columns:
-CUSTOMER ID     NAME                                      
------------     ----
-*/
+--5. Purchased
+--Write a query to display customer ID and customer name for customers who have 
+--purchased all these three products: Products with ID 31, 205, 275.
+--Sort the result by customer ID.
+--The query returns 1 row. See the following output columns:
+--CUSTOMER ID     NAME                                      
+-------------     ----
 
 select *
 from order_items oi
@@ -66,7 +90,7 @@ left join orders o
 on oi.order_id = o.order_id
 left join customers c
 on c.customer_id = o.customer_id
-where oi.product_id in (31, 205, 275);
+where oi.product_id in(31, 205, 275);
 
 
 /*6.	Salesman
