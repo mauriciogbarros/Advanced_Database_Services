@@ -66,7 +66,7 @@ ORDER BY "Manager ID";
 -- Product ID   Order Date     Number of orders
 -- ----------   ----------     ----------------
 
-SELECT product_id, order_date, COUNT( DISTINCT oi.order_id) AS "number of orders"
+SELECT product_id, order_date, COUNT(DISTINCT oi.order_id) AS "number of orders"
 FROM order_items oi
 LEFT JOIN orders o
 ON oi.order_id = o.order_id
@@ -84,13 +84,15 @@ ORDER BY product_id;
 --CUSTOMER ID     NAME                                      
 -------------     ----
 
-select *
+select o.customer_id
 from order_items oi
 left join orders o
 on oi.order_id = o.order_id
 left join customers c
 on c.customer_id = o.customer_id
-where oi.product_id in(31, 205, 275);
+where oi.product_id in (31, 205, 275) and count(product_id) = 3;
+group by o.customer_id;
+
 
 
 /*6.	Salesman
@@ -101,7 +103,7 @@ The query returns 1 row. See the following output:
 Employee ID     Number of Orders
 -----------     ---------------- */
 
-SELECT e.employee_id, COUNT(o.order_id)
+SELECT e.employee_id AS "Employee ID", COUNT(o.order_id) AS "Number of Orders"
 FROM employees e
     JOIN orders o
         ON e.employee_id = o.salesman_id
