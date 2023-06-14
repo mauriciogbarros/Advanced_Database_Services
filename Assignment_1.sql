@@ -76,6 +76,8 @@ GROUP BY product_id, order_date
 HAVING COUNT( DISTINCT oi.order_id) > 1  
 ORDER BY product_id;
 
+
+
 --5. Purchased
 --Write a query to display customer ID and customer name for customers who have 
 --purchased all these three products: Products with ID 31, 205, 275.
@@ -84,16 +86,29 @@ ORDER BY product_id;
 --CUSTOMER ID     NAME                                      
 -------------     ----
 
-select o.customer_id
-from order_items oi
-left join orders o
-on oi.order_id = o.order_id
-left join customers c
-on c.customer_id = o.customer_id
-where oi.product_id in (31, 205, 275) and count(product_id) = 3;
-group by o.customer_id;
-
-
+SELECT O.customer_id, C.NAME
+FROM order_items oi
+LEFT JOIN orders O
+ON oi.order_id = O.order_id
+LEFT JOIN customers C
+ON C.customer_id = O.customer_id
+WHERE oi.product_id = (31)
+INTERSECT 
+SELECT O.customer_id, C.NAME
+FROM order_items oi
+LEFT JOIN orders O
+ON oi.order_id = O.order_id
+LEFT JOIN customers C
+ON C.customer_id = O.customer_id
+WHERE oi.product_id = (205)
+INTERSECT
+SELECT O.customer_id, C.NAME
+FROM order_items oi
+LEFT JOIN orders O
+ON oi.order_id = O.order_id
+LEFT JOIN customers C
+ON C.customer_id = O.customer_id
+WHERE oi.product_id = (275);
 
 /*6.	Salesman
 Write a query to display employee ID and the number of orders for employee(s) 
