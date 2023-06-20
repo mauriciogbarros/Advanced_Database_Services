@@ -9,7 +9,7 @@ To create a new branch:
 - git branch <new_branch_name>
 
 To create a new branch and switch to the new branch:
-- git checkout -b <new_branch_name>
+- git checkout <new_branch_name>
 
 To stage a file that will be committed:
 - git add [filename]
@@ -28,8 +28,11 @@ To upload local branch commits to corresponding remote branch.
 To push a new branch to remote repository
 - git push -u origin [branch]
 
-To delete a local branch (switch to another branch first)
-- git branch -d [branch_name]
+To merge branch with main (checkout to main first)
+- git merge [branch]
+
+To delete local branch (checkout from the branch first)
+- git branch -d [branch]
 
 To delete a remote branch
 - git push remote_name -d remote_branch_name
