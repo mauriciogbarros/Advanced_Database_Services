@@ -142,13 +142,8 @@ ORDER BY e.employee_id;
 Write a query to display the month number, month name, year, total number 
 of orders, and total sales amount for each month in 2016. 
 Sort the result according to month number. 
-<<<<<<< HEAD
 The query returns 9 rows.*/
 
-=======
-The query returns 9 rows. See the output result as follows. 
-*/
->>>>>>> 8f71353d600f927446c30fc47681e63fc8b701f0
 SELECT EXTRACT(MONTH FROM order_date) AS month_number,
        TO_CHAR(order_date, 'Month') AS month_name,
        2016 as year, count(order_id)
@@ -158,14 +153,58 @@ group by EXTRACT(MONTH FROM order_date),
        TO_CHAR(order_date, 'Month'), 2016;
 inner join order_items oi 
 on o.order_id = oi.order_id;
-<<<<<<< HEAD
-
 select * from orders;
 
 
 
-=======
->>>>>>> 8f71353d600f927446c30fc47681e63fc8b701f0
+/*8. Monthly Sales
+Write a query to display month number, month name, and average sales amount (per
+order) for each month in 2016 where the average sales amount is greater than
+the average sales amount (per order) for the entire year.
+Round the average amount to two decimal places.
+Sort the result by the month number.
+HINT: In this query, you will calculate the average sales amount for each month
+in 2016 and compare it to the overal average sales amount for the entire year.
+Using a WITH clause will simplify your code greatly.
+
+The query returns 5 rows. See the output result as follows.
+Month Number Month     Average Sales Amount
+------------ --------- --------------------
+           5 May                  632459.45
+           6 June                 476419.31
+           7 July                 616763.19
+           8 August                733195.9
+          11 November              429796.2
+*/
+SELECT
+    TO_NUMBER(TO_CHAR(o.order_date,'fmMM')) AS "Month Number",
+    TO_CHAR(o.order_date,'Month') AS "Month",
+    oi.order_id,
+    ROUND(AVG(oi.quantity * oi.unit_price),2) AS "Average Sales Amount"
+FROM orders o JOIN
+    order_items oi ON o.order_id = oi.order_id
+WHERE 
+    TO_NUMBER(TO_CHAR(o.order_date,'yyyy')) = 2016 
+GROUP BY 
+    TO_NUMBER(TO_CHAR(o.order_date,'fmMM')), 
+    TO_CHAR(o.order_date,'Month'),
+    oi.order_id
+HAVING 
+    AVG(oi.quantity * oi.unit_price) > 
+    (
+        SELECT AVG(oi.quantity * oi.unit_price)
+        FROM order_items oi
+            JOIN orders o ON oi.order_id = o.order_id
+        WHERE TO_NUMBER(TO_CHAR(o.order_date,'yyyy')) = 2016
+    )
+ORDER BY "Month Number";
+
+SELECT AVG(oi.quantity * oi.unit_price)
+FROM order_items oi
+    JOIN orders o ON oi.order_id = o.order_id
+WHERE TO_NUMBER(TO_CHAR(o.order_date,'yyyy')) = 2016;
+
+
 
 
 
