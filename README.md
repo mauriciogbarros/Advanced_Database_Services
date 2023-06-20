@@ -9,7 +9,7 @@ To create a new branch:
 - git branch <new_branch_name>
 
 To create a new branch and switch to the new branch:
-- git checkout <new_branch_name>
+- git checkout -b <new_branch_name>
 
 To stage a file that will be committed:
 - git add [filename]
