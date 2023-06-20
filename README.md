@@ -27,3 +27,13 @@ To upload local branch commits to corresponding remote branch.
 
 To push a new branch to remote repository
 - git push -u origin [branch]
+
+To merge branch with main (checkout to main first)
+- git merge [branch]
+
+To delete local branch (checkout from the branch first)
+- git branch -d [branch]
+
+To delete a remote branch
+- git push remote_name -d remote_branch_name
+- ex.: git push origin -d q10_gleison
