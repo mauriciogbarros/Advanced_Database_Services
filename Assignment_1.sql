@@ -142,8 +142,13 @@ ORDER BY e.employee_id;
 Write a query to display the month number, month name, year, total number 
 of orders, and total sales amount for each month in 2016. 
 Sort the result according to month number. 
+<<<<<<< HEAD
 The query returns 9 rows.*/
 
+=======
+The query returns 9 rows. See the output result as follows. 
+*/
+>>>>>>> 8f71353d600f927446c30fc47681e63fc8b701f0
 SELECT EXTRACT(MONTH FROM order_date) AS month_number,
        TO_CHAR(order_date, 'Month') AS month_name,
        2016 as year, count(order_id)
@@ -153,11 +158,14 @@ group by EXTRACT(MONTH FROM order_date),
        TO_CHAR(order_date, 'Month'), 2016;
 inner join order_items oi 
 on o.order_id = oi.order_id;
+<<<<<<< HEAD
 
 select * from orders;
 
 
 
+=======
+>>>>>>> 8f71353d600f927446c30fc47681e63fc8b701f0
 
 
 
