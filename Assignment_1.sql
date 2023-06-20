@@ -144,6 +144,15 @@ of orders, and total sales amount for each month in 2016.
 Sort the result according to month number. 
 The query returns 9 rows. See the output result as follows. 
 */
+SELECT EXTRACT(MONTH FROM order_date) AS month_number,
+       TO_CHAR(order_date, 'Month') AS month_name,
+       2016 as year, count(order_id)
+FROM orders o
+WHERE EXTRACT(YEAR FROM order_date) = 2016 
+group by EXTRACT(MONTH FROM order_date),
+       TO_CHAR(order_date, 'Month'), 2016;
+inner join order_items oi 
+on o.order_id = oi.order_id;
 
 /*8. Monthly Sales
 Write a query to display month number, month name, and average sales amount (per
