@@ -193,7 +193,7 @@ FROM
     WHERE 
         TO_NUMBER(TO_CHAR(o.order_date,'yyyy')) = 2016 
     GROUP BY 
-        TO_NUMBER(TO_CHAR(o.order_date,'fm MM')), 
+        TO_NUMBER(TO_CHAR(o.order_date,'fmMM')), 
         TO_CHAR(o.order_date,'Month'),
         oi.order_id
 )
