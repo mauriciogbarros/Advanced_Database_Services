@@ -144,16 +144,20 @@ of orders, and total sales amount for each month in 2016.
 Sort the result according to month number. 
 The query returns 9 rows.*/
 
-SELECT EXTRACT(MONTH FROM order_date) AS month_number,
-       TO_CHAR(order_date, 'Month') AS month_name,
-       2016 as year, count(order_id)
+SELECT TO_NUMBER(TO_CHAR(o.order_date,'fmMM')) AS "Month Number",
+        TO_CHAR(o.order_date,'Month') AS "Month", 
+        TO_NUMBER(TO_CHAR(o.order_date, 'fmYYYY')) AS "Year",
+        COUNT(DISTINCT (oi.order_id)) AS "Total Number of Orders",
+        SUM(oi.quantity * oi.unit_price) AS "Sales Amount"
 FROM orders o
-WHERE EXTRACT(YEAR FROM order_date) = 2016 
-group by EXTRACT(MONTH FROM order_date),
-       TO_CHAR(order_date, 'Month'), 2016;
-inner join order_items oi 
-on o.order_id = oi.order_id;
-select * from orders;
+JOIN
+    order_items oi ON o.order_id = oi.order_id
+WHERE 
+    TO_NUMBER(TO_CHAR(o.order_date,'yyyy')) = 2016 
+GROUP BY TO_NUMBER(TO_CHAR(o.order_date,'fmMM')),
+        TO_CHAR(o.order_date,'Month'), 
+        TO_NUMBER(TO_CHAR(o.order_date, 'fmYYYY'))
+ORDER BY "Month Number";
 
 
 
