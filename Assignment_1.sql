@@ -213,3 +213,45 @@ GROUP BY
     "Month Number",
     "Month"
 ORDER BY "Month Number";
+
+/*
+Question 10
+Write a query to generate the following output with the calculated values filled
+in.
+
+OUTPUT
+
+---------------------------------------------------------------------------------
+The number of employees with total order amount over average order amount: x
+The number of employees with total number of orders greater than 10: x
+The number of employees with no order: xx
+The number of employees with orders: x
+
+Average order amount is the average amount during salesman. While calculating
+the average order amount, you should exclude the orders that without a
+salesman.
+Hint: using a with clause will simplify your coude.
+*/
+SELECT COUNT(ALL "Orders")
+FROM
+(
+    SELECT COUNT(order_id) AS "Orders"
+    FROM orders
+    WHERE salesman_id IS NOT NULL
+    HAVING COUNT(order_id) > 10
+    GROUP BY salesman_id
+);
+
+SELECT COUNT(employee_id)
+FROM
+(
+    SELECT employee_id
+    FROM employees
+    MINUS
+    SELECT salesman_id
+    FROM orders
+    WHERE salesman_id IS NOT NULL
+);
+
+SELECT COUNT(DISTINCT salesman_id)
+FROM orders;
