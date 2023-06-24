@@ -260,6 +260,14 @@ FROM orders;
 
 
 --QUESTION 9
+/*9.	Employees 
+Write a query to display first names in EMPLOYEES that start with letter ‘A’ but do not exist in CONTACTS. 
+Sort the result by first name.
+The query returns 2 rows. See the output column as follows. 
+
+First Name           
+-----------*/
+
 
 SELECT first_name
 FROM employees 
@@ -272,48 +280,5 @@ ORDER BY first_name;
 SELECT first_name
 FROM contacts
 WHERE first_name LIKE 'A%';
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 >>>>>>> q9-gleison
