@@ -155,8 +155,6 @@ inner join order_items oi
 on o.order_id = oi.order_id;
 select * from orders;
 
-
-
 /*8. Monthly Sales
 Write a query to display month number, month name, and average sales amount (per
 order) for each month in 2016 where the average sales amount is greater than
@@ -176,35 +174,38 @@ Month Number Month     Average Sales Amount
            8 August                733195.9
           11 November              429796.2
 */
-SELECT
-    TO_NUMBER(TO_CHAR(o.order_date,'fmMM')) AS "Month Number",
-    TO_CHAR(o.order_date,'Month') AS "Month",
-    oi.order_id,
-    ROUND(AVG(oi.quantity * oi.unit_price),2) AS "Average Sales Amount"
-FROM orders o JOIN
-    order_items oi ON o.order_id = oi.order_id
-WHERE 
-    TO_NUMBER(TO_CHAR(o.order_date,'yyyy')) = 2016 
-GROUP BY 
-    TO_NUMBER(TO_CHAR(o.order_date,'fmMM')), 
-    TO_CHAR(o.order_date,'Month'),
-    oi.order_id
-HAVING 
-    AVG(oi.quantity * oi.unit_price) > 
+SELECT 
+    "Month Number",
+    "Month",
+    ROUND(AVG("Total Sales per Order"),2) AS "Average Sales Amount"
+FROM
+(
+    SELECT
+        TO_NUMBER(TO_CHAR(o.order_date,'fmMM')) AS "Month Number",
+        TO_CHAR(o.order_date,'Month') AS "Month",
+        SUM(oi.quantity * oi.unit_price) AS "Total Sales per Order"
+    FROM orders o JOIN
+        order_items oi ON o.order_id = oi.order_id
+    WHERE 
+        TO_NUMBER(TO_CHAR(o.order_date,'yyyy')) = 2016 
+    GROUP BY 
+        TO_NUMBER(TO_CHAR(o.order_date,'fm MM')), 
+        TO_CHAR(o.order_date,'Month'),
+        oi.order_id
+)
+HAVING AVG("Total Sales per Order") > 
+(
+    SELECT AVG("Total")
+    FROM
     (
-        SELECT AVG(oi.quantity * oi.unit_price)
+        SELECT oi.order_id, SUM(oi.quantity * oi.unit_price) AS "Total"
         FROM order_items oi
             JOIN orders o ON oi.order_id = o.order_id
         WHERE TO_NUMBER(TO_CHAR(o.order_date,'yyyy')) = 2016
+        GROUP BY oi.order_id
     )
+)
+GROUP BY
+    "Month Number",
+    "Month"
 ORDER BY "Month Number";
-
-SELECT AVG(oi.quantity * oi.unit_price)
-FROM order_items oi
-    JOIN orders o ON oi.order_id = o.order_id
-WHERE TO_NUMBER(TO_CHAR(o.order_date,'yyyy')) = 2016;
-
-
-
-
-
