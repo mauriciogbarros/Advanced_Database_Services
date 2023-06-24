@@ -213,3 +213,63 @@ GROUP BY
     "Month Number",
     "Month"
 ORDER BY "Month Number";
+
+
+
+--QUESTION 9
+
+SELECT first_name
+FROM employees 
+WHERE UPPER(first_name) LIKE 'A%' AND first_name NOT IN (
+                                        SELECT first_name
+                                        FROM contacts)
+ORDER BY first_name;
+
+
+SELECT first_name
+FROM contacts
+WHERE first_name LIKE 'A%';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
