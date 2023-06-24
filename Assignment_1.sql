@@ -214,6 +214,7 @@ GROUP BY
     "Month"
 ORDER BY "Month Number";
 
+<<<<<<< HEAD
 /*
 Question 10
 Write a query to generate the following output with the calculated values filled
@@ -255,3 +256,64 @@ FROM
 
 SELECT COUNT(DISTINCT salesman_id)
 FROM orders;
+=======
+
+
+--QUESTION 9
+
+SELECT first_name
+FROM employees 
+WHERE UPPER(first_name) LIKE 'A%' AND first_name NOT IN (
+                                        SELECT first_name
+                                        FROM contacts)
+ORDER BY first_name;
+
+
+SELECT first_name
+FROM contacts
+WHERE first_name LIKE 'A%';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+>>>>>>> q9-gleison
