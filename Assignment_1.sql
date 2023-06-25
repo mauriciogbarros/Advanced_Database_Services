@@ -214,6 +214,24 @@ GROUP BY
     "Month"
 ORDER BY "Month Number";
 
+--QUESTION 9
+/*9.	Employees 
+Write a query to display first names in EMPLOYEES that start with letter ‘A’ but do not exist in CONTACTS. 
+Sort the result by first name.
+The query returns 2 rows. See the output column as follows. 
+
+First Name           
+-----------*/
+
+
+SELECT first_name
+FROM employees 
+WHERE UPPER(first_name) LIKE 'A%' AND first_name NOT IN (
+                                        SELECT first_name
+                                        FROM contacts)
+ORDER BY first_name;
+
+
 /*
 Question 10
 Write a query to generate the following output with the calculated values filled
@@ -232,7 +250,21 @@ the average order amount, you should exclude the orders that without a
 salesman.
 Hint: using a with clause will simplify your coude.
 */
-SELECT COUNT(ALL "Orders")
+
+SELECT CONCAT ('The number of employees with total order amount over average order amount: ', (COUNT (*))) FROM (
+SELECT O.salesman_id
+FROM orders O
+LEFT JOIN order_items oi
+ON O.order_id = oi.order_id
+WHERE O.salesman_id IS NOT NULL
+GROUP BY O.salesman_id
+HAVING (SUM(oi.quantity * oi.unit_price)) > (SELECT (SUM(quantity * unit_price))/COUNT(DISTINCT order_id)
+FROM order_items
+WHERE order_id IN (SELECT order_id FROM orders WHERE salesman_id IS NOT NULL)))
+
+UNION ALL
+
+SELECT CONCAT('The number of employees with total number of orders greater than 10: ', COUNT(ALL "Orders"))
 FROM
 (
     SELECT COUNT(order_id) AS "Orders"
@@ -240,9 +272,11 @@ FROM
     WHERE salesman_id IS NOT NULL
     HAVING COUNT(order_id) > 10
     GROUP BY salesman_id
-);
+)
 
-SELECT COUNT(employee_id)
+UNION ALL
+
+SELECT CONCAT('The number of employees with no order: ', COUNT(employee_id))
 FROM
 (
     SELECT employee_id
@@ -251,7 +285,11 @@ FROM
     SELECT salesman_id
     FROM orders
     WHERE salesman_id IS NOT NULL
-);
+)
 
-SELECT COUNT(DISTINCT salesman_id)
+UNION ALL
+
+SELECT CONCAT('The number of employees with orders: ', COUNT(DISTINCT salesman_id))
 FROM orders;
+
+
