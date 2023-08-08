@@ -1,6 +1,5 @@
 SET SERVEROUTPUT ON;
 
-
 --1st STORED PROCEDURE FIND CUSTOMER
 CREATE OR REPLACE PROCEDURE find_customer (m_customer_id IN NUMBER, found OUT NUMBER)
 AS 
@@ -37,7 +36,6 @@ begin
         end if;
     END IF;    
 end;
-
 
 --2nd STORED PROCEDURE FIND_PRODUCT
 CREATE OR REPLACE PROCEDURE find_product (m_productId IN NUMBER,price OUT FLOAT, productName OUT STRING)
@@ -124,7 +122,6 @@ BEGIN
     dbms_output.put_line (nextID);
 END;
 
-
 --5th STORED PROCEDURE ADD ORDE ITEM
 
 CREATE OR REPLACE PROCEDURE add_order_item (orderId IN NUMBER,
@@ -150,7 +147,6 @@ BEGIN
     add_order_item(orderId, itemId, productId, quantity, price);
 
 END;
-
 
 --6th STORED PROCEDURE CUSTOMER ORDER
 
@@ -179,12 +175,31 @@ BEGIN
     end if;
 END;
 
+--7th STORED PROCEDURE DISPLAY ORDER STATUS
 
+CREATE OR REPLACE PROCEDURE display_order_status(orderId IN NUMBER, status OUT STRING )
+AS 
+BEGIN 
+    SELECT status INTO status
+    FROM orders
+    WHERE order_id = orderId;
+    
+EXCEPTION
+ WHEN no_data_found  THEN orderId := NULL;
+END;
 
-
-
-
-
+DECLARE
+    orderId NUMBER := 93331;
+    status STRING(15);
+BEGIN
+    customer_order(orderId, status);
+    
+    if STRING IS NULL THEN
+        dbms_output.put_line ('There is no order with id: ' || orderId);
+    else 
+        dbms_output.put_line ('Order number: ' || orderId || ' status is ' || status);
+    end if;
+END;
 
 
 
