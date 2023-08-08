@@ -152,10 +152,32 @@ BEGIN
 END;
 
 
+--6th STORED PROCEDURE CUSTOMER ORDER
 
+CREATE OR REPLACE PROCEDURE customer_order (customerId IN NUMBER, orderId IN OUT NUMBER)
+AS
+BEGIN
 
+SELECT order_id INTO orderID
+FROM orders
+WHERE customer_id = customerID AND order_id = orderId;
 
+ EXCEPTION
+ WHEN no_data_found  THEN orderId := 0;
+END;
 
+DECLARE
+    customerId NUMBER := 9;
+    orderId NUMBER := 93331;
+BEGIN
+    customer_order(customerId, orderId);
+    
+    if orderId > 0 then
+        dbms_output.put_line ('Customer number: ' || customerId || ' has an order number: ' || orderId);
+    else 
+        dbms_output.put_line ('Customer number: ' || customerId || ' DOES NOT HAVE an order with the given order number');
+    end if;
+END;
 
 
 
