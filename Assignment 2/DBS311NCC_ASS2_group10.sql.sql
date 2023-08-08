@@ -83,41 +83,25 @@ END;
 
 CREATE OR REPLACE PROCEDURE add_order (customer_id IN NUMBER, new_order_id OUT NUMBER)
 AS 
-currMonth number;
-catId NUMBER;
+salesPersonID NUMBER;
+status STRING (15);
+currDate DATE;
 BEGIN
+currDate := sysdate();
+salesPersonID := 56;
+status := 'Shipped';
+new_order_id := generate_order_id();
 
-select to_char(sysdate, 'MM') into currMonth
-from dual;
-            
-            SELECT list_price, product_name, category_id INTO price, productName, catId
-            FROM products
-            WHERE product_id = m_productId;
-            
-            IF((currMonth = 11  OR currMonth = 12) AND (catId = 2 OR catId = 5)) then price := price*.90;   END IF;   
- 
- EXCEPTION
- WHEN no_data_found  THEN price := 0; productName := null;
- WHEN too_many_rows  THEN price := -1;
- WHEN OTHERS THEN price := -2;
+INSERT INTO orders 
+    VALUES (new_order_id, customer_id, status, salesPersonID, currDate);
+
 END;
 
 DECLARE
-    productName STRING(255); price FLOAT; prod_code NUMBER;
+new_order_id number;
 BEGIN
-    prod_code := 6;
-    find_product(prod_code, price, productName);
-    
-    IF price > 0 then
-        DBMS_OUTPUT.PUT_LINE ('We found the prod id: ' || prod_code); 
-        DBMS_OUTPUT.PUT_LINE ('Product name is: ' || productName);
-        DBMS_OUTPUT.PUT_LINE ('Price for this product is: ' || price);
-    ELSE
-        IF price = 0 then DBMS_OUTPUT.PUT_LINE ('We did not find the prod id: ' || prod_code);
-        elsif price = -1 then DBMS_OUTPUT.PUT_LINE ('Too many returned.');
-        else DBMS_OUTPUT.PUT_LINE ('!Unknow error!');
-        end if;
-    END IF;    
+    add_order(1, new_order_id);
+    dbms_output.put_line (new_order_id);
 END;
 
 --4th STORED PROCEDURE (function) GENERATE ORDER ID
@@ -140,7 +124,6 @@ BEGIN
     dbms_output.put_line (nextID);
 END;
 
-------------------
 
 
 
