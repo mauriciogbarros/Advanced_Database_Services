@@ -1,4 +1,4 @@
-set serveroutput on;
+SET SERVEROUTPUT ON;
 
 
 --1st STORED PROCEDURE FIND CUSTOMER
@@ -125,10 +125,31 @@ BEGIN
 END;
 
 
+--5th STORED PROCEDURE ADD ORDE ITEM
 
+CREATE OR REPLACE PROCEDURE add_order_item (orderId IN NUMBER,
+                             itemId IN NUMBER, 
+                             productId IN NUMBER, 
+                             quantity IN NUMBER,
+                             price IN FLOAT)
+AS 
+BEGIN
 
+INSERT INTO order_items 
+    VALUES (orderId, itemId, productId, quantity, price);
+END;
 
+DECLARE
+    orderId NUMBER := 107;
+    itemId NUMBER := 6;
+    productId NUMBER := 183;
+    quantity NUMBER := 79;
+    price FLOAT :=899.99;
+BEGIN
+    
+    add_order_item(orderId, itemId, productId, quantity, price);
 
+END;
 
 
 
