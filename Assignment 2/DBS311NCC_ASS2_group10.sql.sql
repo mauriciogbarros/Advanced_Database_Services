@@ -205,28 +205,26 @@ END;
 
 CREATE OR REPLACE PROCEDURE cancel_order (orderId IN NUMBER, cancelStatus OUT NUMBER)
 AS
-orderStatus VARCHAR2(20);
+orderStatus VARCHAR2(20) := NULL;
 BEGIN
-      SELECT status INTO orderStatus
-      FROM orders
-      WHERE order_id = orderId;
+      SELECT status INTO orderStatus FROM orders WHERE order_id = orderId;
       
-EXCEPTION
- WHEN no_data_found THEN cancelStatus := 0;
-
-IF orderId THEN
-    IF orderStatus LIKE "Cancelled" then cancelStatus :=1;        
-    ELSE IF orderStatus LIKE "Shipped" THEN cancelStatus := 2;
+IF orderStatus IS NOT NULL THEN
+    IF orderStatus LIKE 'Canceled' then cancelStatus :=1;        
+    ELSE IF orderStatus LIKE 'Shipped' THEN cancelStatus := 2;
     ELSE cancelStatus := 3;
-    END IF;
-END IF;
+        UPDATE orders
+        SET status = 'Canceled'
+        WHERE order_id = orderId;
+    END IF;   END IF; END IF; 
+    
+    EXCEPTION WHEN no_data_found THEN cancelStatus := 0; END;
 
-
-
- END IF;
-END;
-
-
+DECLARE
+    orderId NUMBER := 108; cancelStatus NUMBER;
+BEGIN
+    cancel_order(orderId, cancelStatus);
+        dbms_output.put_line ('cancelStatus variable returned as: ' || cancelStatus);  END;
 
 
 
