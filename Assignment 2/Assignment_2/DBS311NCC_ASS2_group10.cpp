@@ -21,7 +21,7 @@ int main(void)
     Connection* conn = nullptr;
     /* Used Variables */
     string user = "dbs311_232ncc36";
-    string pass = "Bemvindo$";
+    string pass = "";
     string constr = "myoracle12c.senecacollege.ca:1521/oracle12c";
     try {
         env = Environment::createEnvironment(Environment::DEFAULT);
