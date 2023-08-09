@@ -177,7 +177,7 @@ END;
 
 --7th STORED PROCEDURE DISPLAY ORDER STATUS
 
-CREATE OR REPLACE PROCEDURE display_order_status(orderId IN NUMBER, status OUT STRING )
+CREATE OR REPLACE PROCEDURE display_order_status(orderId IN NUMBER, status OUT VARCHAR2 )
 AS 
 BEGIN 
     SELECT status INTO status
@@ -185,26 +185,46 @@ BEGIN
     WHERE order_id = orderId;
     
 EXCEPTION
- WHEN no_data_found  THEN orderId := NULL;
+ WHEN no_data_found  THEN status := NULL;
 END;
 
 DECLARE
-    orderId NUMBER := 93331;
-    status STRING(15);
+    orderId NUMBER := 93;
+    status VARCHAR2(20);
 BEGIN
-    customer_order(orderId, status);
+    display_order_status(orderId, status);
     
-    if STRING IS NULL THEN
+    if status IS NULL THEN
         dbms_output.put_line ('There is no order with id: ' || orderId);
     else 
         dbms_output.put_line ('Order number: ' || orderId || ' status is ' || status);
     end if;
 END;
 
+--8th STORED PROCEDURE DISPLAY ORDER STATUS
 
+CREATE OR REPLACE PROCEDURE cancel_order (orderId IN NUMBER, cancelStatus OUT NUMBER)
+AS
+orderStatus VARCHAR2(20) := NULL;
+BEGIN
+      SELECT status INTO orderStatus FROM orders WHERE order_id = orderId;
+      
+IF orderStatus IS NOT NULL THEN
+    IF orderStatus LIKE 'Canceled' then cancelStatus :=1;        
+    ELSE IF orderStatus LIKE 'Shipped' THEN cancelStatus := 2;
+    ELSE cancelStatus := 3;
+        UPDATE orders
+        SET status = 'Canceled'
+        WHERE order_id = orderId;
+    END IF;   END IF; END IF; 
+    
+    EXCEPTION WHEN no_data_found THEN cancelStatus := 0; END;
 
-
-
+DECLARE
+    orderId NUMBER := 108; cancelStatus NUMBER;
+BEGIN
+    cancel_order(orderId, cancelStatus);
+        dbms_output.put_line ('cancelStatus variable returned as: ' || cancelStatus);  END;
 
 
 
