@@ -18,5 +18,13 @@
     <ClCompile Include="DBS311NCC_ASS2_group10.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Orders.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Orders.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

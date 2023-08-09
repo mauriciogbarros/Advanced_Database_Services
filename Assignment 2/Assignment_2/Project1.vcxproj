@@ -119,19 +119,23 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\app\gvieira-dutra\product\12.2.0\client_1\oci\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\app\oracle\product\12.2.0\client_1\oci\include;C:\app\gvieira-dutra\product\12.2.0\client_1\oci\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>C:\app\gvieira-dutra\product\12.2.0\client_1\oci\lib\msvc\vc14;C:\app\gvieira-dutra\product\12.2.0\client_1\oci\lib\msvc;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>C:\app\oracle\product\12.2.0\client_1\oci\lib\msvc\vc14;C:\app\oracle\product\12.2.0\client_1\oci\lib\msvc;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>oraocci12.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="DBS311NCC_ASS2_group10.cpp" />
+    <ClCompile Include="Orders.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Orders.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
