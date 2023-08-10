@@ -8,26 +8,23 @@ using oracle::occi::Connection;
 using namespace oracle::occi;
 using namespace std;
 
-struct ShoppingCart 
-{
-    int product_id;
-    double price;
-    int quantity;
-};
+#define MAX_ITEMS 5
 
 int main(void)
 {
+    bool customerFound{ true };
+    bool goToCheckout{};
     int menuInput{ 1 };
     int customerId{};
-    bool customerFound{};
     int subMenuInput{};
     int orderId{};
-    ShoppingCart* cart{};
-    // *** Remove
-    int temp{};
+    int n_items{};
+    ShoppingCart cart[MAX_ITEMS] = {};
+
     /* OCCI Variables */
     Environment* env = nullptr;
     Connection* conn = nullptr;
+
     /* Used Variables */
     string user = "dbs311_232ncc36";
     string pass = "Bemvindo$";
@@ -40,50 +37,66 @@ int main(void)
         conn = env->createConnection(user, pass, constr);
         cout << "Connection is Successful!" << endl;
 
-        while (menuInput != 0 || customerFound == 0)
+        while (menuInput != 0)
         {
-            int input = mainMenu();
-            if (input == 1)
+            menuInput = mainMenu();
+            if (menuInput == 1)
             {
                 std::cout << "Enter the customer ID: ";
                 std::cin >> customerId;
                 customerFound = customerLogin(conn, customerId);
-            }
-
-            if (customerFound)
-            {
-                subMenuInput = subMenu();
-                switch (subMenuInput)
+                if (customerFound)
                 {
-                case 0:
+                    subMenuInput = subMenu();
+                    switch (subMenuInput)
                     {
-                        if (cart)
-                        {
-                            delete[] cart;
-                            cart = nullptr;
-                        }
+                    case 0:
+                    {
                     }
                     break;
 
-                case 1:
-                    temp = addToCart(conn, cart);
-                    break;
-                case 2:
-                {
-                    std::cout << "Enter an Order ID: ";
-                    std::cin >> orderId;
-                    displayOrderStatus(conn, orderId, customerId);
-                }
-                break;
+                    case 1:
+                    {
+                        n_items = addToCart(conn, cart);
+                        displayProducts(cart, n_items);
+                        goToCheckout = checkout(conn, cart, customerId, n_items);
 
-                case 3:
-                {
-                    std::cout << "Enter an Order ID: ";
-                    std::cin >> orderId;
-                    cancelOrder(conn, orderId, customerId);
+                    }
+                    break;
+
+                    case 2:
+                    {
+                        std::cout << "Enter an Order ID: ";
+                        std::cin >> orderId;
+                        displayOrderStatus(conn, orderId, customerId);
+                    }
+                    break;
+
+                    case 3:
+                    {
+                        std::cout << "Enter an Order ID: ";
+                        std::cin >> orderId;
+                        cancelOrder(conn, orderId, customerId);
+                    }
+                    break;
+                    }
+
+                    /*
+                    * If the user enters "N/n", the function checkout terminates and returns 0.
+                    * If the user enters "Y/y", call procedure add_order()
+                    * ... see the Assignment 2 docx.
+                    * 
+                    * This is how I figured out how to use the return from checkout.
+                    * Feel free to change the logic if you think otherwise.
+                    */
+                    if (goToCheckout)
+                    {
+
+                        customerFound = false;
+                    }
                 }
-                break;
-                }
+                else
+                    std::cout << "The customer does not exist.\n";
             }
         }
 

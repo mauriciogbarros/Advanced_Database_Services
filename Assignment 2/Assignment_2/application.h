@@ -8,6 +8,13 @@ using oracle::occi::Environment;
 using oracle::occi::Connection;
 using namespace oracle::occi;
 
+struct ShoppingCart
+{
+    int product_id;
+    double price;
+    int quantity;
+};
+
 void displayOrderStatus(Connection* conn, int orderId, int customerId);
 void cancelOrder(Connection* conn, int orderId, int customerId);
 int mainMenu();
