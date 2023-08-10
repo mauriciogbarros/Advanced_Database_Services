@@ -14,12 +14,13 @@ int main(void)
 {
     bool customerFound{ true };
     bool goToCheckout{};
-    int menuInput{ 1 };
-    int customerId{};
-    int subMenuInput{};
-    int orderId{};
-    int n_items{};
+    size_t menuInput{ 1 };
+    size_t customerId{};
+    size_t subMenuInput{};
+    size_t orderId{};
+    size_t n_items{};
     ShoppingCart cart[MAX_ITEMS] = {};
+    size_t shoppingCartSize{};
 
     /* OCCI Variables */
     Environment* env = nullptr;
@@ -27,7 +28,7 @@ int main(void)
 
     /* Used Variables */
     string user = "dbs311_232ncc36";
-    string pass = "Bemvindo$";
+    string pass = "Bem";
     string constr = "myoracle12c.senecacollege.ca:1521/oracle12c";
 
     // Attempt to stablish a connection
@@ -60,7 +61,6 @@ int main(void)
                         n_items = addToCart(conn, cart);
                         displayProducts(cart, n_items);
                         goToCheckout = checkout(conn, cart, customerId, n_items);
-
                     }
                     break;
 

@@ -15,6 +15,8 @@ struct ShoppingCart
     int quantity;
 };
 
+extern int cartSize;
+
 void displayOrderStatus(Connection* conn, int orderId, int customerId);
 void cancelOrder(Connection* conn, int orderId, int customerId);
 int mainMenu();

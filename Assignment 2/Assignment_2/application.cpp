@@ -1,5 +1,7 @@
 #include "application.h"
 
+int cartSize{};
+
 void displayOrderStatus(Connection* conn, int orderId, int customerId)
 {
 	Statement* stmt{};
@@ -136,6 +138,7 @@ int customerLogin(Connection* conn, int customerId)
 		stmt->setInt(2, customerFound);
 		stmt->execute();
 		customerFound = stmt->getInt(2);
+		std::cout << "Customer exists!!!!!!!!!!!!!!!" << std::endl;
 		conn->terminateStatement(stmt);
 		return customerFound;
 	}
@@ -149,28 +152,29 @@ int addToCart(Connection* conn, struct ShoppingCart cart[])
 {
 	bool moreProducts{ true };
 	int productId{};
-	int n_items;
+	static int n_myItems{};
 	double productPrice{};
 	
-	n_items = sizeof(*cart) / (2 * sizeof(int) + sizeof(double));
+	//n_items = sizeof(*cart) / (2 * sizeof(int) + sizeof(double));
 
 	std::cout << "-------------- Add Products to Cart ---------------\n";
-	while (n_items < 5 && moreProducts)
+	while (n_myItems < 5 && moreProducts)
 	{
-		std::cout << "N Items: " << n_items << std::endl;
+		//std::cout << "N Items: " << n_items << std::endl;
 		std::cout << "Enter the product ID: ";
 		std::cin >> productId;
 		productPrice = findProduct(conn, productId);
 
 		if (productPrice > 0)
 		{
-			cart[n_items].product_id = productId;
-			cart[n_items].price = productPrice;
-			std::cout << "Product Price: " << cart[n_items].price << std::endl;
+			cart[n_myItems].product_id = productId;
+			cart[n_myItems].price = productPrice;
+			std::cout << "Product Price: " << cart[n_myItems].price << std::endl;
 			std::cout << "Enter the product Quantity: ";
-			std::cin >> cart[n_items].quantity;
-			n_items++;
-			if (n_items < 5)
+			std::cin >> cart[n_myItems].quantity;
+			n_myItems++;
+			cartSize++;
+			if (n_myItems < 5)
 			{
 				std::cout << "Enter 1 to add more products or 0 to checkout: ";
 				std::cin >> moreProducts;
@@ -179,7 +183,7 @@ int addToCart(Connection* conn, struct ShoppingCart cart[])
 		else
 			std::cout << "The product does not exist. Try again...\n";
 	}
-	return n_items;
+	return n_myItems;
 }
 
 double findProduct(Connection* conn, int productId)
@@ -225,9 +229,12 @@ void displayProducts(struct ShoppingCart cart[], int productCount)
 
 int checkout(Connection* conn, struct ShoppingCart cart[], int customerId, int productCount)
 {
+	Statement* myStatement{};
+	Statement* myStatement2{};
 	char input{};
 	bool correctInput{ false };
 	bool goToCheckout{};
+	int newOrderNum{};
 
 	while (!correctInput)
 	{
@@ -239,8 +246,47 @@ int checkout(Connection* conn, struct ShoppingCart cart[], int customerId, int p
 		else
 			std::cout << "Wrong input. Try again...\n";
 	}
-	if (input == 'Y')
+	if(input == 'Y')
+	{
+		std::cout << "1 : "<< std::endl;
 		goToCheckout = true;
+	
+		myStatement = conn->createStatement("BEGIN add_order(:1, :2); END;");
+		std::cout << "2 : product count:" << productCount << std::endl;
+		myStatement->setInt(1, customerId);
+		std::cout << "3 : customerID: "<< customerId << std::endl;
+		myStatement->setInt(2, newOrderNum);
+		std::cout << "4 cartSize: "<< cartSize << std::endl;
+		myStatement->execute();
+		std::cout << "5 : "<< std::endl;
+		newOrderNum = myStatement->getInt(2);
+		std::cout << "6 : "<< std::endl;
+		conn->terminateStatement(myStatement);
+		
+		
+		
+		
+		/*stmt = conn->createStatement("BEGIN add_order(:1, :2); END;");
+		stmt->setInt(1, customerId);
+		stmt->setInt(2, newOrderNum);
+		stmt->execute();
+		newOrderNum = stmt->getInt(2);*/
+
+		std::cout << "New order num is : " << newOrderNum << std::endl;
+
+		myStatement2 = conn->createStatement("BEGIN add_order_item(:1, :2, :3, :4, :5); END;");
+		myStatement2->setInt(1, newOrderNum);
+		for (size_t i = 0; i < cartSize; i++)
+		{
+			myStatement2->setInt(2, i+1  );
+			myStatement2->setInt(3, cart[i].product_id);
+			myStatement2->setInt(4, cart[i].quantity);
+			myStatement2->setInt(5, cart[i].price);
+		}
+		conn->terminateStatement(myStatement);
+		conn->terminateStatement(myStatement2);
+
+	}
 	else
 		goToCheckout = false;
 

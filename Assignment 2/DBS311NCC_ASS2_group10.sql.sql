@@ -78,32 +78,28 @@ BEGIN
 END;
 
 --3rd STORED PROCEDURE ADD ORDER
-
-CREATE OR REPLACE PROCEDURE add_order (customer_id IN NUMBER, new_order_id OUT NUMBER)
-AS 
-salesPersonID NUMBER;
-status STRING (15);
+CREATE OR REPLACE PROCEDURE add_order(customer_id IN NUMBER, new_order_id OUT NUMBER)
+AS salesPersonID NUMBER;
+status VARCHAR2 (20);
 currDate DATE;
 BEGIN
-currDate := sysdate();
+currDate := sysdate;
 salesPersonID := 56;
 status := 'Shipped';
 new_order_id := generate_order_id();
 
-INSERT INTO orders 
-    VALUES (new_order_id, customer_id, status, salesPersonID, currDate);
-
+   INSERT INTO orders 
+   VALUES (new_order_id, customer_id, status, salesPersonID, currDate);
 END;
 
 DECLARE
 new_order_id number;
 BEGIN
-    add_order(1, new_order_id);
+    add_order(44, new_order_id);
     dbms_output.put_line (new_order_id);
 END;
 
 --4th STORED PROCEDURE (function) GENERATE ORDER ID
-
 CREATE OR REPLACE FUNCTION generate_order_id
 RETURN number
 IS
@@ -123,7 +119,6 @@ BEGIN
 END;
 
 --5th STORED PROCEDURE ADD ORDE ITEM
-
 CREATE OR REPLACE PROCEDURE add_order_item (orderId IN NUMBER,
                              itemId IN NUMBER, 
                              productId IN NUMBER, 
@@ -137,19 +132,16 @@ INSERT INTO order_items
 END;
 
 DECLARE
-    orderId NUMBER := 107;
+    orderId NUMBER := 108;
     itemId NUMBER := 6;
     productId NUMBER := 183;
     quantity NUMBER := 79;
     price FLOAT :=899.99;
 BEGIN
-    
     add_order_item(orderId, itemId, productId, quantity, price);
-
 END;
 
 --6th STORED PROCEDURE CUSTOMER ORDER
-
 CREATE OR REPLACE PROCEDURE customer_order (customerId IN NUMBER, orderId IN OUT NUMBER)
 AS
 BEGIN
@@ -176,7 +168,6 @@ BEGIN
 END;
 
 --7th STORED PROCEDURE DISPLAY ORDER STATUS
-
 CREATE OR REPLACE PROCEDURE display_order_status(orderId IN NUMBER, status OUT VARCHAR2 )
 AS 
 BEGIN 
@@ -202,7 +193,6 @@ BEGIN
 END;
 
 --8th STORED PROCEDURE DISPLAY ORDER STATUS
-
 CREATE OR REPLACE PROCEDURE cancel_order (orderId IN NUMBER, cancelStatus OUT NUMBER)
 AS
 orderStatus VARCHAR2(20) := NULL;
