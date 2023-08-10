@@ -1,7 +1,7 @@
 ﻿C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(517,5): warning MSB8028: The intermediate directory (x64\Release\) contains files shared from another project (Project1.vcxproj).  This can lead to incorrect clean and rebuild behavior.
   application.cpp
-C:\Users\vieir\OneDrive - Seneca\SENECA_3\DBS_NCC\DBS311NCC\Assignment 2\Assignment_2\application.cpp(281,33): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\vieir\OneDrive - Seneca\SENECA_3\DBS_NCC\DBS311NCC\Assignment 2\Assignment_2\application.cpp(284,35): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\vieir\OneDrive - Seneca\SENECA_3\DBS_NCC\DBS311NCC\Assignment 2\Assignment_2\application.cpp(291,33): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\vieir\OneDrive - Seneca\SENECA_3\DBS_NCC\DBS311NCC\Assignment 2\Assignment_2\application.cpp(294,35): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
   Generating code
   0 of 113 functions ( 0.0%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation

@@ -274,17 +274,28 @@ int checkout(Connection* conn, struct ShoppingCart cart[], int customerId, int p
 
 		std::cout << "New order num is : " << newOrderNum << std::endl;
 
-		myStatement2 = conn->createStatement("BEGIN add_order_item(:1, :2, :3, :4, :5); END;");
-		myStatement2->setInt(1, newOrderNum);
 		for (size_t i = 0; i < cartSize; i++)
 		{
+			std::cout << i << " ::cart[i].product_id" << cart[i].product_id << std::endl;
+			std::cout << i << " ::cart[i].quantity" << cart[i].quantity << std::endl;
+			std::cout << i << " ::cart[i].price" << cart[i].price << std::endl;
+		}
+
+			std::cout << "Printed til here " << std::endl;
+
+
+		for (size_t i = 0; i < cartSize; i++)
+		{
+		    myStatement2 = conn->createStatement("BEGIN add_order_item(:1, :2, :3, :4, :5); END;");
+		    myStatement2->setInt(1, newOrderNum);
 			myStatement2->setInt(2, i+1  );
 			myStatement2->setInt(3, cart[i].product_id);
 			myStatement2->setInt(4, cart[i].quantity);
 			myStatement2->setInt(5, cart[i].price);
+			myStatement2->execute();
+		conn->terminateStatement(myStatement2);
 		}
 		conn->terminateStatement(myStatement);
-		conn->terminateStatement(myStatement2);
 
 	}
 	else
