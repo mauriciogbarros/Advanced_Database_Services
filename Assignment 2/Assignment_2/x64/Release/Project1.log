@@ -1,8 +1,9 @@
 ﻿C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(531,5): warning MSB8028: The intermediate directory (x64\Release\) contains files shared from another project (Project1.vcxproj).  This can lead to incorrect clean and rebuild behavior.
   DBS311NCC_ASS2_group10.cpp
+  application.cpp
   Generating code
-  2 of 98 functions ( 2.0%) were compiled, the rest were copied from previous compilation.
+  5 of 79 functions ( 6.3%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
-    0 functions had inline decision re-evaluated but remain unchanged
+    1 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
   Project1.vcxproj -> C:\Users\mauri\OneDrive\SENECA\03_2023_02_SUMMER\DBS311NCC\DBS311NCC\Assignment 2\Assignment_2\x64\Release\Assignment_2.exe

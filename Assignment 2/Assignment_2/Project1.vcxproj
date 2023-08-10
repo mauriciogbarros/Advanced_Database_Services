@@ -132,10 +132,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="DBS311NCC_ASS2_group10.cpp" />
-    <ClCompile Include="Orders.cpp" />
+    <ClCompile Include="application.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Orders.h" />
+    <ClInclude Include="application.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

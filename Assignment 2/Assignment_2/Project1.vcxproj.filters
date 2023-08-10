@@ -18,12 +18,12 @@
     <ClCompile Include="DBS311NCC_ASS2_group10.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Orders.cpp">
+    <ClCompile Include="application.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Orders.h">
+    <ClInclude Include="application.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
