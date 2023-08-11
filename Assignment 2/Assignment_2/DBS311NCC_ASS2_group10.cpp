@@ -8,17 +8,15 @@ using oracle::occi::Connection;
 using namespace oracle::occi;
 using namespace std;
 
-#define MAX_ITEMS 5
-
 int main(void)
 {
     bool customerFound{ true };
-    bool goToCheckout{};
+    bool cartCheckout{ false };
     size_t menuInput{ 1 };
     size_t customerId{};
     size_t subMenuInput{};
     size_t orderId{};
-    size_t n_items{};
+    size_t nItems{};
     ShoppingCart cart[MAX_ITEMS] = {};
     size_t shoppingCartSize{};
 
@@ -48,57 +46,49 @@ int main(void)
                 customerFound = customerLogin(conn, customerId);
                 if (customerFound)
                 {
-                    subMenuInput = subMenu();
-                    switch (subMenuInput)
+                    while (!cartCheckout)
                     {
-                    case 0:
-                    {
-                    }
-                    break;
+                        subMenuInput = subMenu();
+                        switch (subMenuInput)
+                        {
+                        case 0:
+                            cartCheckout = true;
+                            break;
 
-                    case 1:
-                    {
-                        n_items = addToCart(conn, cart);
-                        displayProducts(cart, n_items);
-                        goToCheckout = checkout(conn, cart, customerId, n_items);
-                    }
-                    break;
+                        case 1:
+                            {
+                                nItems = addToCart(conn, cart);
+                                displayProducts(cart, nItems);
+                                cartCheckout = checkout(conn, cart, customerId, nItems);
+                            }
+                            break;
 
-                    case 2:
-                    {
-                        std::cout << "Enter an Order ID: ";
-                        std::cin >> orderId;
-                        displayOrderStatus(conn, orderId, customerId);
-                    }
-                    break;
+                        case 2:
+                            {
+                                std::cout << "Enter an Order ID: ";
+                                std::cin >> orderId;
+                                displayOrderStatus(conn, orderId, customerId);
+                            }
+                            break;
 
-                    case 3:
-                    {
-                        std::cout << "Enter an Order ID: ";
-                        std::cin >> orderId;
-                        cancelOrder(conn, orderId, customerId);
+                        case 3:
+                            {
+                                std::cout << "Enter an Order ID: ";
+                                std::cin >> orderId;
+                                cancelOrder(conn, orderId, customerId);
+                            }
+                            break;
+                        }
                     }
-                    break;
-                    }
-
-                    /*
-                    * If the user enters "N/n", the function checkout terminates and returns 0.
-                    * If the user enters "Y/y", call procedure add_order()
-                    * ... see the Assignment 2 docx.
-                    * 
-                    * This is how I figured out how to use the return from checkout.
-                    * Feel free to change the logic if you think otherwise.
-                    */
-                    if (goToCheckout)
-                    {
-
-                        customerFound = false;
-                    }
+                    for (int i = 0; i < nItems; i++)
+                        cart[i] = ShoppingCart();
+                    cartCheckout = false;
                 }
                 else
                     std::cout << "The customer does not exist.\n";
             }
         }
+        std::cout << "Good bye...!\n";
 
         /*========================FINISH THE STATEMENT QUERY========================*/
         env->terminateConnection(conn);
